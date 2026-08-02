@@ -24,8 +24,8 @@ ui <- page_navbar(
   header = tags$head(tags$style(HTML(hero_css()))),
   nav_panel("Overview",     tab1_ui("tab1")),
   nav_panel("Two Cities",   tab2_ui("tab2")),
-  nav_panel("Buy or Rent?", tab3_ui("tab3")),
-  nav_panel("Austin",       tab4_ui("tab4"))
+  nav_panel("Austin",       tab4_ui("tab4")),
+  nav_panel("Buy or Rent?", tab3_ui("tab3"))
 )
 
 server <- function(input, output, session) {
