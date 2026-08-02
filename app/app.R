@@ -14,7 +14,6 @@ library(tidyr)
 library(ggplot2)
 library(scales)
 library(ggrepel)
-library(gt)      # tab 4 ranking table; loaded now so the package set is frozen
 
 # One read at startup. Modules receive `app_data`, never touch disk themselves.
 app_data <- load_data("data")

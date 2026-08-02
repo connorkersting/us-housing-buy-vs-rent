@@ -1,7 +1,7 @@
-# mod_tab2_divergence.R -- TAB 2, KNOXVILLE VS SAN FRANCISCO. Owner: Jack.
+# mod_tab2_divergence.R -- TAB 2, KNOXVILLE VS SAN FRANCISCO. Owner: unassigned, claim it in the group chat.
 # Read mod_template.R first. This stub runs as-is; replace the chart body.
 #
-# TODO(Jack), the whole job is one indexed line chart:
+# TODO(tab 2 owner), the whole job is one indexed line chart:
 #   - Two lines from app_data$divergence: Knoxville and San Francisco,
 #     indexed Dec 2019 = 100, full range 2000-2026. Do not crop to 2019:
 #     the pre-2020 era is the point, and cropping invites a cherry-picking
@@ -19,7 +19,7 @@ tab2_ui <- function(id) {
     h3("For twenty years San Francisco was the better bet. Then it inverted."),
     plotOutput(ns("chart"), height = "500px"),
     p(class = "hero-sub",
-      "EDIT 3 (Jack): state the indexing convention in one sentence so the
+      "EDIT 3: state the indexing convention in one sentence so the
        axis is unambiguous: both metros equal 100 in December 2019.")
   )
 }
@@ -36,7 +36,7 @@ tab2_server <- function(id, app_data) {
   })
 }
 
-# TODO(Jack): replace this placeholder body with the real indexed chart.
+# TODO(tab 2 owner): replace this placeholder body with the real indexed chart.
 build_tab2_chart <- function(d) {
   ggplot(d, aes(date, index, group = RegionName)) +
     geom_line(color = PROJ_GRAY, linewidth = 1.1) +
