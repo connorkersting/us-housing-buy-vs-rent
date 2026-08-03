@@ -18,9 +18,11 @@ tab2_ui <- function(id) {
   tagList(
     h3("For twenty years San Francisco was the better bet. Then it inverted."),
     plotOutput(ns("chart"), height = "500px"),
-    p(class = "hero-sub",
-      "EDIT 3: state the indexing convention in one sentence so the
-       axis is unambiguous: both metros equal 100 in December 2019.")
+    p("Both metros are indexed to 100 in December 2019, so the lines show
+   relative growth from that shared baseline rather than dollar values.
+   Today a typical Knoxville home runs about $370,149 versus $1,142,320
+   in San Francisco. Data: Zillow Home Value Index research data,
+   monthly through June 2026.")
   )
 }
 
@@ -38,13 +40,45 @@ tab2_server <- function(id, app_data) {
 
 # TODO(tab 2 owner): replace this placeholder body with the real indexed chart.
 build_tab2_chart <- function(d) {
-  ggplot(d, aes(date, index, group = RegionName)) +
-    geom_line(color = PROJ_GRAY, linewidth = 1.1) +
-    labs(
-      title    = "PLACEHOLDER: indexed home values, Knoxville vs San Francisco",
-      subtitle = "Dec 2019 = 100",
-      x = NULL, y = NULL,
-      caption  = "Zillow ZHVI, metro level, through June 2026"
+  end_labels <- d %>%
+    dplyr::group_by(RegionName) %>%
+    dplyr::filter(date == max(date)) %>%
+    dplyr::ungroup()
+
+  ggplot2::ggplot(d, ggplot2::aes(x = date, y = index, color = RegionName)) +
+    ggplot2::geom_vline(
+      xintercept = as.Date("2019-12-01"),
+      color = PROJ_DARK,
+      linewidth = 0.3,
+      linetype = "dashed"
     ) +
-    theme_project()
+    ggplot2::annotate(
+      "text",
+      x = as.Date("2019-12-01"),
+      y = 45,
+      label = "both = 100",
+      hjust = 1.1,
+      vjust = 0,
+      size = 3,
+      color = PROJ_DARK
+    ) +
+    ggplot2::geom_line(linewidth = 1.1) +
+    ggrepel::geom_text_repel(
+      data = end_labels,
+      ggplot2::aes(label = RegionName),
+      hjust = 0,
+      direction = "y",
+      nudge_x = 120,
+      nudge_y = ifelse(end_labels$RegionName == "San Francisco, CA", 12, 0),
+      segment.color = NA,
+      fontface = "bold"
+    ) +
+    ggplot2::scale_color_manual(
+  values = c("Knoxville, TN" = PROJ_ACCENT, "San Francisco, CA" = PROJ_DARK),
+  guide = "none"
+    ) +
+    ggplot2::scale_x_date(expand = ggplot2::expansion(mult = c(0.02, 0.28))) +
+    ggplot2::labs(x = NULL, y = "Value Index (Dec 2019 = 100)") +
+    theme_project() + 
+    ggplot2::theme(plot.margin = ggplot2::margin(t = 10, r = 10, b = 10, l = 20))
 }

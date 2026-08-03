@@ -9,7 +9,7 @@
 # It also installs any missing packages the first time you run it.
 # Scaffolding generated with AI assistance (Claude); see AI_LOG.md.
 
-MY_TAB <- 1   # <- CHANGE THIS to your tab number: 1, 2, 3, or 4
+MY_TAB <- 2   # <- CHANGE THIS to your tab number: 1, 2, 3, or 4
 
 # ---- working directory check ----------------------------------------------
 if (!dir.exists("app/R")) {
