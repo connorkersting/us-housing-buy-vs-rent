@@ -28,3 +28,6 @@ from this file.
 **Pending attribution updates:**
 - Adapter patches after schema check
 - Build script, README, narrative doc (upcoming sessions)
+
+**Jack Wrote (still ongoing)**
+2026-08-03 Jack tab 2: AI edited build_tab2_chart() in mod_tab2_divergence.R (fixed missing + breaking the plot, corrected RegionName color mapping, repositioned annotation/labels, adjusted margins).
