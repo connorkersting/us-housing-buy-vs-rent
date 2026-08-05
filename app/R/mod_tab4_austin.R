@@ -1,29 +1,4 @@
-# mod_tab4_austin.R -- TAB 3 in the app, "Austin". Owner: James.
-#
-# NAMING NOTE: this tab is THIRD in the app but the file and its functions are
-# numbered 4. That is intentional. Do not rename anything to make the numbers
-# match; app.R references these names.
-#
-# TODO(James), one deliverable:
-#   ZORI time series for Austin from app_data$austin: mark the Aug 2022 peak
-#   ($1,858) and the current value ($1,653, down 11.0%). Direct labels,
-#   PROJ_ACCENT for the Austin line. Replace build_tab4_chart() below.
-#   The bar chart (build_tab4_ranking) is already written and runs. Leave it.
-#
-# To see your charts: open preview.R at the repo root, set MY_TAB <- 4
-# (the FILE number, not the tab position), and source it.
-#
-# TWO CAVEATS the presenter must say out loud (they are in the text block so
-# they cannot be forgotten): descriptive only, no causal claim about
-# construction; and Austin is 9th, not 1st.
-# Scaffolding generated with AI assistance (Claude); see AI_LOG.md.
-
-# ---- Verified 2026-08-02 against d$ranking ---------------------------------
-# At 20% down vs all rentals: San Jose 162% (rank 1), Austin 88.4% (rank 9).
-# Austin sits at rank 9 under THIS setting, which is what puts it in the top
-# 10 bar chart at all. Under "sfr" it is rank 12 and drops off the chart.
-# The chart prints the rental definition and down payment in its subtitle so
-# the assumption is always visible on screen.
+# tab_austin.R
 RANK_COMPARATOR <- "all"   # "all" or "sfr"
 RANK_DOWN       <- 20      # 5, 10, or 20
 # ----------------------------------------------------------------------------
@@ -63,22 +38,32 @@ tab4_server <- function(id, app_data) {
   })
 }
 
-# TODO(James): replace placeholder body with the annotated ZORI series.
+# ---- build_tab_chart(): annotated Austin ZORI line -------------------------
+
 build_tab4_chart <- function(d) {
+  current_row <- d |> dplyr::slice_tail(n = 1)
+
   ggplot(d, aes(date, value)) +
-    geom_line(color = PROJ_GRAY, linewidth = 1.1) +
-    scale_y_continuous(labels = lab_dollar) +
-    labs(
-      title    = "PLACEHOLDER: Austin typical rent (ZORI)",
-      subtitle = "Peak and current value to be annotated",
-      x = NULL, y = NULL,
-      caption  = "Zillow ZORI, metro level, through June 2026"
+    geom_line(color = "orange", linewidth = 1.25) +  # orange trend line
+    geom_point(data = current_row, aes(date, value), color = "orange", size = 3) +
+    geom_text(
+      data = current_row,
+      aes(date, value, label = paste0("Current: $", scales::comma(value))),
+      vjust = -1.2, hjust = 0.5,
+      color = "black", fontface = "bold", size = 4.6
     ) +
-    theme_project()
+    scale_y_continuous(labels = scales::dollar) +
+    labs(
+      title    = "Austin Typical Rent (ZORI)",
+      subtitle = "Rise and Fall of Austin, Texas Rent Prices",
+      x = NULL, y = NULL,
+      caption  = "Zillow ZORI, metro level, through June 2026"
+    ) +
+    theme_minimal()
 }
 
-# Top 10 metros by buy premium. Austin in accent, everyone else gray.
-# The subtitle states the rental definition and down payment on screen.
+
+# Top 10 metros by buy premium.
 build_tab4_ranking <- function(d) {
   sub <- if (RANK_COMPARATOR == "sfr") "single-family rentals" else
     "all rentals, including apartments"
