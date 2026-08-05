@@ -28,3 +28,13 @@ from this file.
 **Pending attribution updates:**
 - Adapter patches after schema check
 - Build script, README, narrative doc (upcoming sessions)
+
+2026-08-05 Connor tab 4: AI fixed build_tab3_years in mod_tab3_buyrent.R (removed the position/nudge_y combination ggrepel rejects, which was the crash).
+2026-08-05 Connor tab 4: AI fixed build_tab3_years in mod_tab3_buyrent.R (replaced per-layer position_jitter with one precomputed beeswarm column, so the Knoxville outline and label land on Knoxville's own dot).
+2026-08-05 Connor tab 4: AI fixed build_tab3_years in mod_tab3_buyrent.R (labels hang below their row and vertical padding tightened, clearing overlaps and dead canvas).
+2026-08-05 Connor tab 4: AI fixed build_tab3_strip in mod_tab3_buyrent.R (off-axis metros are dropped and counted in the caption instead of oob_squish stacking them into a fake cluster on the panel edge).
+2026-08-05 Connor tab 4: AI fixed build_tab3_strip in mod_tab3_buyrent.R (default xlim pads outward instead of clipping the smallest metro when every gap is positive).
+2026-08-05 Connor tab 4: AI edited build_tab3_strip in mod_tab3_buyrent.R (shared FOCUS_METROS labels for Knoxville, Nashville and Austin, placed in a reserved lane above the cloud with leader lines).
+2026-08-05 Connor tab 4: AI edited build_tab3_strip in mod_tab3_buyrent.R (dot intensity now grades with gap magnitude on two separate ramps, hue still strictly binary by sign).
+2026-08-05 Connor tab 4: AI edited build_tab3_years in mod_tab3_buyrent.R (same focus cities as the strip plus the slow metros, all in one repel layer inside a reserved lane below the row).
+2026-08-05 Connor tab 4: AI edited FOCUS_METROS in mod_tab3_buyrent.R (added New York as the expensive-coastal anchor on both charts, replacing San Francisco's role on the strip).
