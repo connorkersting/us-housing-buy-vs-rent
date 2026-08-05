@@ -29,6 +29,8 @@ from this file.
 - Adapter patches after schema check
 - Build script, README, narrative doc (upcoming sessions)
 
+**Jack Wrote (still ongoing)**
+2026-08-03 Jack tab 2: AI edited build_tab2_chart() in mod_tab2_divergence.R (fixed missing + breaking the plot, corrected RegionName color mapping, repositioned annotation/labels, adjusted margins).
 2026-08-05 Connor tab 4: AI fixed build_tab3_years in mod_tab3_buyrent.R (removed the position/nudge_y combination ggrepel rejects, which was the crash).
 2026-08-05 Connor tab 4: AI fixed build_tab3_years in mod_tab3_buyrent.R (replaced per-layer position_jitter with one precomputed beeswarm column, so the Knoxville outline and label land on Knoxville's own dot).
 2026-08-05 Connor tab 4: AI fixed build_tab3_years in mod_tab3_buyrent.R (labels hang below their row and vertical padding tightened, clearing overlaps and dead canvas).
