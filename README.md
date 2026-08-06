@@ -22,7 +22,7 @@ metros that flip at 20% down take a median 6.4 years for the median household
 to save the down payment. The 293 that do not take 8.4. Los Angeles takes 18.8
 years and still does not flip.
 
-**Live app:** ADD_YOUR_SHINYAPPS_URL_HERE
+**Live app:** https://connorkersting.shinyapps.io/us-housing-buy-vs-rent/
 
 ## What is here
 
