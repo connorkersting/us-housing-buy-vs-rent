@@ -40,3 +40,6 @@ from this file.
 2026-08-05 Connor tab 4: AI edited build_tab3_strip in mod_tab3_buyrent.R (dot intensity now grades with gap magnitude on two separate ramps, hue still strictly binary by sign).
 2026-08-05 Connor tab 4: AI edited build_tab3_years in mod_tab3_buyrent.R (same focus cities as the strip plus the slow metros, all in one repel layer inside a reserved lane below the row).
 2026-08-05 Connor tab 4: AI edited FOCUS_METROS in mod_tab3_buyrent.R (added New York as the expensive-coastal anchor on both charts, replacing San Francisco's role on the strip).
+2026-08-05 Connor tab 3: AI edited build_tab4_chart in mod_tab4_austin.R (shared theme, PROJ_ACCENT/PROJ_DARK, lab_dollar, unclipped current-value label, sentence-case title).
+2026-08-05 Connor tab 2: AI edited build_tab2_chart in mod_tab2_divergence.R (restored label leader lines, trimmed right axis expansion from 0.28 to 0.14).
+2026-08-05 Connor: AI deleted app/R/mod_template.R (unmounted scaffold containing "EDIT 1" and "PLACEHOLDER" strings that shipped with the deploy).

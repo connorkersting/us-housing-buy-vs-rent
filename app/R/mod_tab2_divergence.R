@@ -70,14 +70,13 @@ build_tab2_chart <- function(d) {
       direction = "y",
       nudge_x = 120,
       nudge_y = ifelse(end_labels$RegionName == "San Francisco, CA", 12, 0),
-      segment.color = NA,
       fontface = "bold"
     ) +
     ggplot2::scale_color_manual(
   values = c("Knoxville, TN" = PROJ_ACCENT, "San Francisco, CA" = PROJ_DARK),
   guide = "none"
     ) +
-    ggplot2::scale_x_date(expand = ggplot2::expansion(mult = c(0.02, 0.28))) +
+    ggplot2::scale_x_date(expand = ggplot2::expansion(mult = c(0.02, 0.14))) +
     ggplot2::labs(x = NULL, y = "Value Index (Dec 2019 = 100)") +
     theme_project() + 
     ggplot2::theme(plot.margin = ggplot2::margin(t = 10, r = 10, b = 10, l = 20))

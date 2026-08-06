@@ -44,22 +44,22 @@ build_tab4_chart <- function(d) {
   current_row <- d |> dplyr::slice_tail(n = 1)
 
   ggplot(d, aes(date, value)) +
-    geom_line(color = "orange", linewidth = 1.25) +  # orange trend line
-    geom_point(data = current_row, aes(date, value), color = "orange", size = 3) +
+    geom_line(color = PROJ_ACCENT, linewidth = 1.25) +
+    geom_point(data = current_row, aes(date, value), color = PROJ_ACCENT, size = 3) +
     geom_text(
       data = current_row,
-      aes(date, value, label = paste0("Current: $", scales::comma(value))),
-      vjust = -1.2, hjust = 0.5,
-      color = "black", fontface = "bold", size = 4.6
+      aes(date, value, label = paste0("Current: ", lab_dollar(value))),
+      vjust = -1.2, hjust = 1.1,
+      color = PROJ_DARK, fontface = "bold", size = 4.6
     ) +
-    scale_y_continuous(labels = scales::dollar) +
+    scale_y_continuous(labels = lab_dollar) +
     labs(
-      title    = "Austin Typical Rent (ZORI)",
-      subtitle = "Rise and Fall of Austin, Texas Rent Prices",
+      title    = "Austin rents peaked in 2022 and have fallen since",
+      subtitle = "Typical monthly rent, Zillow ZORI",
       x = NULL, y = NULL,
       caption  = "Zillow ZORI, metro level, through June 2026"
     ) +
-    theme_minimal()
+    theme_project()
 }
 
 
