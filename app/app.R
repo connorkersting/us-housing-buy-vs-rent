@@ -1,7 +1,7 @@
 # app.R -- shell only. Modules live in R/, which Shiny auto-sources at startup.
 # RULES that keep the one-file submission build safe:
 #   1. ALL library() calls live here and only here. shinyapps.io package
-#      detection scans this file, and the concatenation build script puts
+#      detection scans this file, and the concatenation build script puts1
 #      this block first.
 #   2. Module files contain definitions only: no library(), no source(),
 #      no top-level side effects.
@@ -22,6 +22,12 @@ ui <- page_navbar(
   title = "Buy vs Rent in US Housing",   # working title, change freely
   theme = app_bs_theme(),
   header = tags$head(tags$style(HTML(hero_css()))),
+  # Austin stacks two full-size plots vertically; under the default
+  # fillable page, bslib flex-shrinks both to fit one screen, squeezing
+  # plotOutput's requested pixel heights down to nothing (its ranking
+  # chart's labels overlapped at ~257px despite height="520px"). Every
+  # other tab keeps the default fillable=TRUE.
+  fillable = c("Overview", "Two Cities", "Buy or Rent?"),
   nav_panel("Overview",     tab1_ui("tab1")),
   nav_panel("Two Cities",   tab2_ui("tab2")),
   nav_panel("Austin",       tab4_ui("tab4")),

@@ -1,0 +1,79 @@
+name: Refresh Zillow data
+
+# Zillow publishes new monthly numbers around the 16th of each month.
+# This job runs a day later, downloads the fresh CSVs, rebuilds the
+# app's .rds files, and opens a PR so a human reviews the new numbers
+# before they reach the live app. It never commits straight to main.
+on:
+  schedule:
+    - cron: "0 12 17 * *" # 12:00 UTC on the 17th of every month
+  workflow_dispatch: {} # lets a team member trigger it manually from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::tidyverse
+
+      - name: Download latest Zillow CSVs
+        run: Rscript data-prep/refresh_raw.R
+
+      # saveRDS() embeds a gzip timestamp, so app/data/*.rds differs on every
+      # rebuild even when the underlying data is identical -- that would make
+      # git diff (and create-pull-request's own change detection) see a
+      # "change" every month whether or not Zillow actually published
+      # anything new. The raw CSVs have no such timestamp, so check those
+      # instead and skip the rebuild entirely when nothing moved.
+      - name: Check whether raw data actually changed
+        id: raw_diff
+        run: |
+          if git diff --quiet -- data-raw/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Rebuild app artifacts
+        if: steps.raw_diff.outputs.changed == 'true'
+        run: Rscript data-prep/build_artifacts.R
+
+      - name: Open PR if data changed
+        if: steps.raw_diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Refresh Zillow data"
+          title: "Monthly Zillow data refresh"
+          body: |
+            ## What this PR does
+
+            Zillow published new numbers this month, so this bot pulled the
+            8 updated CSVs straight from Zillow and reran our existing build
+            script on them. That script does the same math it's always done
+            (index to Dec 2019, compute buy-vs-rent gaps, etc.) -- nothing
+            about *how* the numbers are calculated has changed, only the
+            input data is newer.
+
+            This only opens a PR; it never merges itself or touches the
+            live app. Someone should review and merge before the site
+            picks it up.
+
+            ## How to check it
+
+            Open the "Rebuild app artifacts" step in this run's log --
+            it prints the same summary tables `build_artifacts.R` always
+            prints (tab 2 index values, tab 3 buy-vs-rent gap counts, tab 4
+            Austin rent peak-vs-now). Skim those for anything that looks
+            off before merging.
+          branch: auto/zillow-data-refresh
+          delete-branch: true
