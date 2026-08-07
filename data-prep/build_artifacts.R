@@ -26,7 +26,7 @@ read_zillow <- function(path, value_name) {
     pivot_longer(matches("^\\d{4}-\\d{2}-\\d{2}$"),
                  names_to = "date", values_to = value_name) |>
     mutate(date = as.Date(date)) |>
-    select(RegionID, RegionName, SizeRank, date, all_of(value_name))
+    select(RegionID, RegionName, SizeRank, StateName, date, all_of(value_name))
 }
 
 raw <- function(f) file.path("data-raw", f)

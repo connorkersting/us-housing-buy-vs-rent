@@ -19,7 +19,7 @@ if (!dir.exists("app/R")) {
 
 # ---- first run installs anything missing ----------------------------------
 needed <- c("shiny", "bslib", "dplyr", "tidyr", "ggplot2", "scales",
-            "ggrepel", "tibble")
+            "ggrepel", "tibble", "usmap", "sf", "plotly")
 missing <- needed[!needed %in% rownames(installed.packages())]
 if (length(missing)) {
   message("Installing: ", paste(missing, collapse = ", "))
@@ -27,6 +27,7 @@ if (length(missing)) {
 }
 
 library(dplyr); library(tidyr); library(ggplot2); library(scales); library(ggrepel)
+library(usmap); library(plotly)
 
 source("app/R/00_theme.R")
 source("app/R/01_data.R")
@@ -35,14 +36,14 @@ d <- load_data("app/data")
 # ---- your data and your chart ---------------------------------------------
 if (MY_TAB == 1) {
   source("app/R/mod_tab1_intro.R")
-  cat("\n--- your data ---\n"); glimpse(d$intro)
-  print(build_tab1_chart(d$intro))
+  cat("\n--- your data ---\n"); glimpse(d$state_prices)
+  print(build_tab1_chart(d$state_prices))
 
 } else if (MY_TAB == 2) {
   source("app/R/mod_tab2_divergence.R")
-  cat("\n--- your data ---\n"); glimpse(d$divergence)
-  cat("metros:", paste(unique(d$divergence$RegionName), collapse = ", "), "\n")
-  print(build_tab2_chart(d$divergence))
+  cat("\n--- your data ---\n"); glimpse(d$home_values)
+  cat("metros:", paste(unique(d$home_values$RegionName), collapse = ", "), "\n")
+  print(build_tab2_chart(d$home_values))
 
 } else if (MY_TAB == 3) {
   source("app/R/mod_tab3_buyrent.R")
@@ -52,12 +53,18 @@ if (MY_TAB == 1) {
 
 } else if (MY_TAB == 4) {
   source("app/R/mod_tab4_austin.R")
-  cat("\n--- your data ---\n"); glimpse(d$austin)
-  print(build_tab4_chart(d$austin))
-  print(build_tab4_ranking(d$ranking))
+  cat("\n--- your data ---\n"); glimpse(d$zori)
+  print(build_tab4_chart(filter(d$zori, RegionName == "Austin, TX")))
+  print(build_tab4_ranking(filter(d$ranking, down == 20, comparator_key == "all")))
 
 } else {
   stop("MY_TAB must be 1, 2, 3, or 4.")
 }
 
-cat("\nChart is in the Plots pane. Widen it before judging the text size.\n")
+if (MY_TAB == 1) {
+  cat("\nTab 1 is an interactive plotly map -- it opens in the Viewer pane,",
+      "not Plots. The click-a-state readout only works inside the running",
+      "app (moduleServer), not here; use shiny::runApp() to test that part.\n")
+} else {
+  cat("\nChart is in the Plots pane. Widen it before judging the text size.\n")
+}

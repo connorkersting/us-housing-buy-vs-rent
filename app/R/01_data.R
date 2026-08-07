@@ -20,13 +20,15 @@ load_data <- function(dir = "data") {
                          tools::file_path_sans_ext(basename(paths)))
 
   out <- list(
-    raw        = raw,
-    intro      = adapt_safely("intro",      adapt_intro(raw)),
-    divergence = adapt_safely("divergence", adapt_divergence(raw)),
-    gaps       = adapt_safely("gaps",       adapt_gaps(raw)),
-    years      = adapt_safely("years",      adapt_years(raw)),
-    austin     = adapt_safely("austin",     adapt_austin(raw)),
-    ranking    = adapt_safely("ranking",    adapt_ranking(raw))
+    raw          = raw,
+    intro        = adapt_safely("intro",        adapt_intro(raw)),
+    divergence   = adapt_safely("divergence",   adapt_divergence(raw)),
+    home_values  = adapt_safely("home_values",  adapt_home_values(raw)),
+    state_prices = adapt_safely("state_prices", adapt_state_prices(raw)),
+    gaps         = adapt_safely("gaps",         adapt_gaps(raw)),
+    years        = adapt_safely("years",        adapt_years(raw)),
+    zori         = adapt_safely("zori",         adapt_zori(raw)),
+    ranking      = adapt_safely("ranking",      adapt_ranking(raw))
   )
 
   # Cross-check live counts against the precomputed gap_summary. Warns only,
@@ -145,14 +147,49 @@ adapt_divergence <- function(raw) {
   )
 }
 
-adapt_austin <- function(raw) {
+# Raw ZHVI dollar values for every metro/month. Tab 2 uses this instead of
+# claim1_index (which is index-only, pinned to Dec 2019) so it can rebase
+# to whatever start date the user picks. Columns out: RegionName, date, value
+adapt_home_values <- function(raw) {
+  stopifnot(!is.null(raw$zhvi))
+  df <- raw$zhvi
+  tibble::tibble(
+    RegionName = need(df, pick_col(df, REGION_CANDS), "metro name"),
+    date       = need(df, pick_col(df, DATE_CANDS), "date"),
+    value      = need(df, pick_col(df, VALUE_CANDS), "value")
+  )
+}
+
+# Tab 1: one average ZHVI per state at the latest date, across every metro
+# Zillow tracks in that state. Columns out: state (2-letter abbreviation,
+# matches usmap's expected join key) | avg_value
+adapt_state_prices <- function(raw) {
+  stopifnot(!is.null(raw$zhvi))
+  df <- raw$zhvi
+
+  base <- tibble::tibble(
+    date  = need(df, pick_col(df, DATE_CANDS), "date"),
+    value = need(df, pick_col(df, VALUE_CANDS), "value"),
+    state = need(df, pick_col(df, c("StateName", "state", "State")), "state")
+  )
+
+  base |>
+    dplyr::filter(date == max(date, na.rm = TRUE)) |>
+    dplyr::summarise(avg_value = mean(value, na.rm = TRUE), .by = state)
+}
+
+# Full ZORI series for every metro. Tab 4 used to hardcode this to Austin
+# only; now the tab lets the user pick any metro, so this stays unfiltered
+# and the module filters reactively to whichever city is selected -- same
+# pattern as adapt_home_values() for Tab 2. Columns out: RegionName | date | value
+adapt_zori <- function(raw) {
   stopifnot(!is.null(raw$zori_all))
   df <- raw$zori_all
   tibble::tibble(
     RegionName = need(df, pick_col(df, REGION_CANDS), "metro name"),
     date       = need(df, pick_col(df, DATE_CANDS), "date"),
     value      = need(df, pick_col(df, VALUE_CANDS), "value")
-  ) |> dplyr::filter(grepl("^Austin", RegionName))
+  )
 }
 
 # Top-50 metros by SizeRank, both comparators and all three down levels.
