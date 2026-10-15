@@ -1,12 +1,10 @@
 # Is it cheaper to buy or rent? It depends on two assumptions nobody states.
 
-Published analyses of buying versus renting contradict each other. Realtor.com's
-2026 rent reports found renting a starter home cheaper than buying in all 50 of
-the largest metros.
+Published analyses of buying versus renting disagree, mostly because they price
+owning and renting differently.
 [Empower](https://www.empower.com/the-currency/life/money/rent-vs-buy-2025-top-50-metros-news)
-found buying cheaper in 23 of 50, comparing principal and interest alone
-against median rent. Neither is wrong. They priced owning and renting
-differently.
+found buying cheaper in 23 of the 50 largest metros by comparing principal and
+interest alone against median rent.
 
 Change two assumptions, the down payment and what you compare against, and the
 number of US metros where buying costs less per month than renting moves from
