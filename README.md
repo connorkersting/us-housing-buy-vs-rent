@@ -1,9 +1,12 @@
 # Is it cheaper to buy or rent? It depends on two assumptions nobody states.
 
-Published analyses of buying versus renting contradict each other. Realtor.com
-reported renting cheaper in all 50 largest metros. Empower reported buying
-cheaper in 23 of 50. Neither is wrong. They used different definitions of
-"rent."
+Published analyses of buying versus renting contradict each other. Realtor.com's
+2026 rent reports found renting a starter home cheaper than buying in all 50 of
+the largest metros.
+[Empower](https://www.empower.com/the-currency/life/money/rent-vs-buy-2025-top-50-metros-news)
+found buying cheaper in 23 of 50, comparing principal and interest alone
+against median rent. Neither is wrong. They priced owning and renting
+differently.
 
 Change two assumptions, the down payment and what you compare against, and the
 number of US metros where buying costs less per month than renting moves from
@@ -92,7 +95,8 @@ Packages: shiny, bslib, dplyr, tidyr, ggplot2, scales, ggrepel.
 ## Scope
 
 The Austin tab is descriptive. It shows that rents fell 11% from their August
-2022 peak while buying still costs 88% more per month, and makes no causal
+2022 peak while buying still costs 88% more per month (20% down, against all
+rentals), and makes no causal
 claim about why rents fell. There is no permits data here.
 
 ## Data
@@ -101,9 +105,18 @@ Zillow Research public data, https://www.zillow.com/research/data/
 ZHVI, ZORI (all rentals and single-family), total monthly payment, years to
 save. Monthly through June 2026.
 
-## Attribution
+## Who did what
 
-Built for BZAN 583.01 at the University of Tennessee, Knoxville. AI assistance
-was used for the app scaffolding and chart code; see `AI_LOG.md` for a
-per-session record of what was AI-written versus author-written. All data
-acquisition, preparation, methodology decisions, and findings are the authors'.
+A four-person team project for BZAN 583.01 (Communication and Storytelling with
+Data) at the University of Tennessee, Knoxville, summer 2026.
+
+- **Connor Kersting** did the data work: pulling the eight Zillow files,
+  `data-prep/build_artifacts.R`, every artifact in `app/data/`, the numbers the
+  app reports, and the method choices listed above. His commit `8a85570` fixed
+  the bug that matched Austin, TX to Austin, MN.
+- **Claude (AI)** wrote the app skeleton, the module pattern, the data-loading
+  adapters and much of the chart code. `AI_LOG.md` lists each AI-written piece
+  by date.
+- **Each tab's claims and text** belong to the student who owned it: Burhan
+  (Overview), Jack (Knoxville vs San Francisco), Connor (Buy or Rent) and
+  James (Austin).
